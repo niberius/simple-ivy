@@ -1,6 +1,7 @@
 package org.zoltor.ivy;
 
 import org.apache.ivy.Ivy;
+import org.apache.ivy.core.retrieve.RetrieveOptions;
 import org.apache.ivy.core.settings.IvySettings;
 import org.zoltor.config.Constants;
 
@@ -35,5 +36,15 @@ public class IvyConfigurator {
             throw new RuntimeException("Unable to operate with ivy settings xml file (path: " +
                     ivyModuleInfo.getPathToIvySettings() + "). Check that file is exists and has valid XML content");
         }
+    }
+
+    public RetrieveOptions createRetrieveOptions() {
+        final RetrieveOptions retrieveOptions = new RetrieveOptions();
+
+        // The pattern should be stored in Idea settings but can be overridden in Module settings
+        final String ivyPattern = (ivyModuleInfo.getIvyRetrieveArtifactPattern() == null) ?
+                Constants.IVY_RETRIEVE_ARTIFACT_PATTERN : ivyModuleInfo.getIvyRetrieveArtifactPattern();
+        retrieveOptions.setDestIvyPattern(ivyModuleInfo.getOutputIvyLibsDir() + ivyPattern);
+        return retrieveOptions;
     }
 }

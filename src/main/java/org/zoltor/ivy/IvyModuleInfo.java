@@ -7,11 +7,13 @@ public class IvyModuleInfo {
     private String pathToIvySettings;
     private String pathToIvyXml;
     private String outputIvyLibsDir;
+    private String ivyRetrieveArtifactPattern;
 
     private IvyModuleInfo(final Builder builder) {
         this.pathToIvySettings = builder.pathToIvySettings;
         this.pathToIvyXml = builder.pathToIvyXml;
         this.outputIvyLibsDir = builder.outputIvyLibsDir;
+        this.ivyRetrieveArtifactPattern = builder.ivyRetrieveArtifactPattern;
     }
 
     public static Builder newBuilder() {
@@ -42,11 +44,17 @@ public class IvyModuleInfo {
         return new File(getOutputIvyLibsDir());
     }
 
+    public String getIvyRetrieveArtifactPattern()
+    {
+        return ivyRetrieveArtifactPattern;
+    }
+
     public static class Builder {
 
         private String pathToIvySettings;
         private String pathToIvyXml;
         private String outputIvyLibsDir;
+        private String ivyRetrieveArtifactPattern;
 
         private Builder() {
 
@@ -57,13 +65,18 @@ public class IvyModuleInfo {
             return this;
         }
 
-        public Builder petPathToIvyXml(String pathToIvyXml) {
+        public Builder pathToIvyXml(String pathToIvyXml) {
             this.pathToIvyXml = pathToIvyXml;
             return this;
         }
 
         public Builder outputIvyLibsDir(String outputIvyLibsDir) {
             this.outputIvyLibsDir = outputIvyLibsDir;
+            return this;
+        }
+
+        public Builder ivyRetrieveArtifactPattern(String ivyRetrieveArtifactPattern) {
+            this.ivyRetrieveArtifactPattern = ivyRetrieveArtifactPattern;
             return this;
         }
     }
