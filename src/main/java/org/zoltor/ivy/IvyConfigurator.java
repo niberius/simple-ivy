@@ -1,8 +1,10 @@
 package org.zoltor.ivy;
 
 import org.apache.ivy.Ivy;
+import org.apache.ivy.core.module.descriptor.Artifact;
 import org.apache.ivy.core.retrieve.RetrieveOptions;
 import org.apache.ivy.core.settings.IvySettings;
+import org.apache.ivy.util.filter.Filter;
 import org.zoltor.config.Constants;
 
 import java.io.File;
@@ -18,7 +20,7 @@ public class IvyConfigurator {
     }
 
     public Ivy createDefaultIvy() {
-        return createIvy(createSettings(Constants.IVY_SETTING_BASE_DIR));
+        return createIvy(createSettings(ivyModuleInfo.getOutputIvyLibsDirAsFile()));
     }
 
     public IvySettings createSettings(File settingsBaseDir) {
@@ -44,7 +46,7 @@ public class IvyConfigurator {
         // The pattern should be stored in Idea settings but can be overridden in Module settings
         final String ivyPattern = (ivyModuleInfo.getIvyRetrieveArtifactPattern() == null) ?
                 Constants.IVY_RETRIEVE_ARTIFACT_PATTERN : ivyModuleInfo.getIvyRetrieveArtifactPattern();
-        retrieveOptions.setDestIvyPattern(ivyModuleInfo.getOutputIvyLibsDir() + File.pathSeparator + ivyPattern);
+        retrieveOptions.setDestIvyPattern(ivyModuleInfo.getOutputIvyLibsDir() + File.separator + ivyPattern);
         retrieveOptions.setDestArtifactPattern(ivyModuleInfo.getIvyRetrieveArtifactPattern());
         return retrieveOptions;
     }

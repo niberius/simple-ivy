@@ -5,6 +5,7 @@ import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.apache.ivy.core.report.ResolveReport;
 import org.apache.ivy.core.retrieve.RetrieveOptions;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,8 +35,9 @@ public class IvyWorker {
     }
 
     public void retrieve() {
-        if (resolveReport == null || resolveReport.hasError()) {
-            throw new RuntimeException("Artifacts weren't resolved. Call org.zoltor.ivy.IvyWorker#resolve() first");
+        if (resolveReport == null || resolveReport.hasError() || !isIvyLibDirRecreated()) {
+            throw new RuntimeException("Artifacts weren't resolved. Call org.zoltor.ivy.IvyWorker#resolve() first " +
+                    "and check that iby libs dir is not locked: " + ivyModuleInfo.getOutputIvyLibsDir());
         }
         ModuleDescriptor moduleDescriptor = resolveReport.getModuleDescriptor();
         ModuleRevisionId moduleRevisionId = moduleDescriptor.getModuleRevisionId();
@@ -53,6 +55,17 @@ public class IvyWorker {
         if (resolveReport.hasError()) {
             throw new RuntimeException("Unable to resolve dependencies. The errors: " +
                     resolveReport.getAllProblemMessages());
+        }
+    }
+
+    private boolean isIvyLibDirRecreated() {
+        try {
+            if (ivyModuleInfo.getOutputIvyLibsDirAsFile().exists()) {
+                FileUtils.deleteDirectory(ivyModuleInfo.getOutputIvyLibsDirAsFile());
+            }
+            return ivyModuleInfo.getOutputIvyLibsDirAsFile().mkdirs();
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to recreate output libs dir: " + ivyModuleInfo.getOutputIvyLibsDir(), e);
         }
     }
 }
