@@ -44,7 +44,8 @@ public class IvyConfigurator {
         // The pattern should be stored in Idea settings but can be overridden in Module settings
         final String ivyPattern = (ivyModuleInfo.getIvyRetrieveArtifactPattern() == null) ?
                 Constants.IVY_RETRIEVE_ARTIFACT_PATTERN : ivyModuleInfo.getIvyRetrieveArtifactPattern();
-        retrieveOptions.setDestIvyPattern(ivyModuleInfo.getOutputIvyLibsDir() + ivyPattern);
+        retrieveOptions.setDestIvyPattern(ivyModuleInfo.getOutputIvyLibsDir() + File.pathSeparator + ivyPattern);
+        retrieveOptions.setDestArtifactPattern(ivyModuleInfo.getIvyRetrieveArtifactPattern());
         return retrieveOptions;
     }
 }

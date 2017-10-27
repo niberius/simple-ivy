@@ -79,5 +79,9 @@ public class IvyModuleInfo {
             this.ivyRetrieveArtifactPattern = ivyRetrieveArtifactPattern;
             return this;
         }
+
+        public IvyModuleInfo build() {
+            return new IvyModuleInfo(this);
+        }
     }
 }

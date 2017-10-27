@@ -28,8 +28,8 @@ public class IvyWorker {
             this.resolveReport = ivy.resolve(ivyModuleInfo.getPathToIvyXmlAsFile());
             processResolveReport(resolveReport);
         } catch (ParseException | IOException e) {
-            throw new RuntimeException("Unable to operate with the main ivy  xml file (path: " +
-                    ivyModuleInfo.getPathToIvyXml() + "). Check that file is exists and has valid XML content");
+            throw new RuntimeException("Unable to operate with the main ivy xml file (path: " +
+                    ivyModuleInfo.getPathToIvyXml() + "). Check that file is exists and has valid XML content", e);
         }
     }
 
